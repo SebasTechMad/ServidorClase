@@ -15,8 +15,8 @@ public class EcoCliente {
 
 	public static final  int PUERTO = 4444;
 	//public static final String localhost = "10.10.0.243";
-	public static final String localhost = "192.168.1.94";
-	
+	//public static final String localhost = "192.168.1.94";
+	public static final String localhost = "localhost";
 	public static void main(String[] args) throws IOException {
 		
 		/*if (args.length == 0) {
@@ -56,6 +56,7 @@ public class EcoCliente {
 		// se despide con "Adios"
 
 		try {
+	    	   System.out.println("Estas conectado con el sistema ELIZA 0.0 :");
 			while (true) {
 				// Leo la entrada del usuario
 				linea = sc.nextLine();

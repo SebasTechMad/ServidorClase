@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -12,9 +14,18 @@ import java.util.Scanner;
  */
 
 public class ServerMTCP{
+	
+	public static HashMap<String, String> theliza = new HashMap<String, String>();
+	
 
     public static void main(String args[]){
-
+    	
+    	theliza.put("HOLA","Hola, ¿qué tal?");
+    	theliza.put("ENCANTADO","Encantado de conocerte yo también");
+    	theliza.put("ADIOS","Adiós, espero volverte a ver pronto");
+    	theliza.put("HORA", "Lo siento no llevo reloj");
+    	theliza.put("NOMBRE","Mi nombre es Eliza");
+    	theliza.put("CACA","Creo que tu lenguaje no es adecuado");
         // Establecemos el número de puerto a utilizar.
         int serverPort = 4444;
         
@@ -31,7 +42,6 @@ public class ServerMTCP{
             
             // Creamos el objeto para esperar peticiones de los clientes.
             listenSocket = new ServerSocket(serverPort);
-
             // CICLO DEL SERVIDOR 
             while (true){
                 
@@ -93,29 +103,50 @@ class Connection extends Thread{
        // Lanzamos el método run.
        this.start();
    }
+   
+   //Método que devuelve el String que has pasado como parámetro pero invertido
+   public String RevertMessage(String message) 
+   {
+	   return new StringBuilder(message).reverse().toString().trim();
+   }
+   
+   public String AnswerBotEliza(String message) 
+   {
+		String answer = "";
+		String notFound = "Lo siento, no te comprendo";
+		
+			boolean encontrado = false;
+			for ( Map.Entry<String, String> entrada: ServerMTCP.theliza.entrySet()){
+			// Si la linea contiene la entrada en al clave
+				if ( message.toUpperCase().contains(entrada.getKey())){
+					answer = entrada.getValue();
+					encontrado = true;
+					break;
+				}
+			}
+			if ( !encontrado)
+				answer = notFound;
+			
+		return answer;
+   }
+   
+   
+   
 
    public void run(){
        
        try {
+    	   
+    	   
                        
-           
            while (true){
-           // Recibe los datos mandados por el cliente.
            String msg = entrada.readLine();
-           String msgReverse = "";
-           for(int contLetters=msg.length() - 1 ; contLetters>= 0 ; contLetters--) 
-           {
-        	   msgReverse += msg.charAt(contLetters);
-           }
            
-           salida.println("mensaje invertido ->"+msgReverse);
-           msgReverse = "";
+           //TODO INTRODUCIR MÉTODO AnswerBotEliza
+           salida.println(AnswerBotEliza(msg));
            
-           //System.out.println("Cliente: " + msg);
-           // Si el mensaje es de terminar	   
-	   if (msg.equals("Adios")) break;
-           // Realiza la réplica de los datos 
-           //salida.println(">>" + procesarMensaje(msg));
+		   if (msg.toUpperCase().equals("ADIOS"))
+			   break;
            }
            
        // Control de excepciones.
